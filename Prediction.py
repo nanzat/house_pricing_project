@@ -21,14 +21,17 @@ def convert_df(df):
     return df.to_csv().encode("utf-8")
 
 st.markdown('''
-    ### House Prices - Advanced Regression Techniques
-    ###### :gray[Predict sales prices and practice feature engineering, RFs, and gradient boosting]
+    ## House Prices - Advanced Regression Techniques
+    ##### :gray[Predict sales prices and practice feature engineering, RFs, and gradient boosting]
     ''')
 
 st.link_button("View competition", "https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/overview")
 
-st.logo('./data/house/icon.jpg', icon_image='./data/house/images.jpg', size='large')
+st.logo('data/house/icon.jpg', icon_image='./data/house/images.jpg', size='large')
 
+st.markdown('''
+#### <- Load Data
+''')
 uploaded_file = st.sidebar.file_uploader(
     "Choose a data", type='csv'
 )
@@ -40,9 +43,11 @@ if st.sidebar.button("Our team"):
     st.session_state.show_text = not st.session_state.show_text
 
 if st.session_state.show_text:
-    st.sidebar.write('Anatoly')
-    st.sidebar.write('Nanzat')
-    st.sidebar.write('Ziyarat')
+    st.sidebar.markdown('''
+    * Anatoly
+    * Nanzat
+    * Ziyarat
+    ''')
 
 cdrop = ['YrSold', 'MoSold', '3SsnPorch', 'BsmtFinType2', 'LowQualFinSF', 'BsmtHalfBath', 'Alley', 'PoolQC', 'Fence', 'MiscFeature', 'Id', 'SalePrice']
 drops = ColumnTransformer(
@@ -56,7 +61,7 @@ drops = ColumnTransformer(
 if uploaded_file:
     df = pd.read_csv(uploaded_file)
 
-    with open('./data/house/pipeline.pkl', 'rb') as file:
+    with open('data/house/pipeline.pkl', 'rb') as file:
         model = pickle.load(file)
 
     itog = pd.DataFrame({'Id': df['Id'], 'SalePrice': np.exp(model.predict(df))})
